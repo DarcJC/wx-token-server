@@ -1,0 +1,43 @@
+on:
+  push:
+    tags:
+      - "release-v*"
+
+name: Auto Release
+
+jobs:
+  build_and_release:
+    name: Rust Project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout code
+      - uses: actions-rs/toolchain@v1
+        name: Select toolchain
+        with:
+          toolchain: nightly
+      - uses: actions-rs/cargo@v1
+        name: Build project
+        with:
+          command: build
+          args: --release --all-features
+      - uses: actions/create-release@v1
+        name: Create Release
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - uses: actions/upload-release-asset@v1
+        id: upload_asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Upload asset
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/release/wx-token-server
+          asset_name: wx-token-server
+          asset_content_type: application/octet-stream
