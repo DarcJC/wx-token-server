@@ -1,0 +1,24 @@
+[package]
+name = "wx-token-server"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lazy_static = "*"
+actix-web = "3"
+serde = "1.0.117"
+serde_json = "1.0.59"
+
+[dependencies.reqwest]
+version = "0.11.3"
+features = ["json"]
+
+[dependencies.tokio]
+version = "1"
+features = ["full"]
+
+[dependencies.async-std]
+version = "1.9.0"
+features = ["tokio1"]
