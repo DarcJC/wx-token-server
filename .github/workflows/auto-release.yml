@@ -12,10 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout code
-      - uses: actions-rs/rust-toolchain@v1
+      - uses: actions-rs/toolchain@v1
         name: Select rust-toolchain
         with:
           toolchain: nightly
+          override: true
+          components: rustfmt, clippy
       - uses: actions-rs/cargo@v1
         name: Build project
         with:
